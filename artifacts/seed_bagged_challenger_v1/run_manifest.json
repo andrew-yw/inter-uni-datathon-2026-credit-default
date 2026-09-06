@@ -1,0 +1,81 @@
+{
+  "cat_members": [
+    {
+      "iterations": 437,
+      "model_sha256": "f8bb89ff32775cc456773f32b82f898bd5201173b0a8622e27f78ec21c0b6311",
+      "runtime_seconds": 3.9213317499961704,
+      "seed": 2026,
+      "view": "numeric_status"
+    },
+    {
+      "iterations": 437,
+      "model_sha256": "d7f813048e9fed952e1c11b8abc7338d4b4533a4e6d1c442bdc6f75589f3d1be",
+      "runtime_seconds": 3.6856503339949995,
+      "seed": 137,
+      "view": "numeric_status"
+    },
+    {
+      "iterations": 437,
+      "model_sha256": "7b89c6916d40d7461b16b59b4d372941403b78822a3192ae6a93fa1dd5507291",
+      "runtime_seconds": 3.686819958034903,
+      "seed": 4099,
+      "view": "numeric_status"
+    },
+    {
+      "iterations": 437,
+      "model_sha256": "e51277334478c279c02f7735fc4a2c4c39cfc82433f47fd15adc9098b2d2e556",
+      "runtime_seconds": 3.71510445792228,
+      "seed": 7919,
+      "view": "numeric_status"
+    },
+    {
+      "iterations": 437,
+      "model_sha256": "b1d3c69836f21aeb6e96ef12f2569a95bd190c19f2332d42fa27533bdd103373",
+      "runtime_seconds": 5.275397417019121,
+      "seed": 2026,
+      "view": "categorical_status"
+    },
+    {
+      "iterations": 437,
+      "model_sha256": "2a4c0913723bb8b8d8f53b73e03a1794fee37b536d6791ee7257d74c55c438e1",
+      "runtime_seconds": 5.3408813329879194,
+      "seed": 137,
+      "view": "categorical_status"
+    },
+    {
+      "iterations": 437,
+      "model_sha256": "8ab7888b2d957b906a4d697656c8385254738c993356cff811371342d0f55b39",
+      "runtime_seconds": 6.1110037920298055,
+      "seed": 4099,
+      "view": "categorical_status"
+    },
+    {
+      "iterations": 437,
+      "model_sha256": "ec8b3b9ec039816a1ee9107b1b60b521f9ea424d56d14b8b2050fa65e0504588",
+      "runtime_seconds": 8.967508833040483,
+      "seed": 7919,
+      "view": "categorical_status"
+    }
+  ],
+  "external_training_data_used": false,
+  "oof": {
+    "absolute_gain": 0.00023340995674825393,
+    "challenger_log_loss": 0.42113785948878324,
+    "challenger_roc_auc": 0.7920392767471063,
+    "current_log_loss": 0.4213712694455315,
+    "fold_log_loss_std": 0.006864228760374949
+  },
+  "runtime_seconds": 41.02312583301682,
+  "source_label_matching_used": false,
+  "submission": {
+    "maximum_probability": 0.889887569252196,
+    "mean_absolute_change_vs_current": 0.003968168788137318,
+    "mean_probability": 0.21945821185132622,
+    "minimum_probability": 0.0128349492688826,
+    "path": "submission.csv",
+    "rows": 6000,
+    "sha256": "ea8d1c1da154f88015368aaa3b5fc02bf960b77953a2654f6990a8d969dedf03"
+  },
+  "test_labels_accessed": false,
+  "version": "seed_bagged_challenger_v1"
+}

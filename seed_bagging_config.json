@@ -1,0 +1,27 @@
+{
+  "version": "seed_bagged_challenger_v1",
+  "seeds": [2026, 137, 4099, 7919],
+  "catboost_views": ["numeric_status", "categorical_status"],
+  "cat_branch_aggregation": "equal mean over all eight members",
+  "full_fit_iterations_per_member": 437,
+  "probability_clip": 1e-7,
+  "input_artifacts": {
+    "base_oof": {
+      "path": "artifacts/archive_ensemble_v1/oof_predictions.csv",
+      "sha256": "8b2a006cd744e4b04dc7e48f6aeb6ad7e17774bc930a3d9749602ebddea8c4c9"
+    },
+    "base_test": {
+      "path": "artifacts/archive_ensemble_v1/test_predictions.csv",
+      "sha256": "2a3fc253172d3f8e21de5db75d6ef441eb514d8d1e38d1468afd2057bea921a9"
+    },
+    "booster_oof": {
+      "path": "artifacts/boosting_research_v1/oof_predictions.csv",
+      "sha256": "f9e280125c299d2b7345e84d7819cada9889ccdf06c218fbffc8949f60383899"
+    },
+    "seed_oof": {
+      "path": "artifacts/seed_bagging_v1/oof_predictions.csv",
+      "sha256": "b7ef2021d9196470e34aa0f5f5050f9d9442560885cd64ad72c0c08619c00dbd"
+    }
+  },
+  "expected_submission_sha256": "ea8d1c1da154f88015368aaa3b5fc02bf960b77953a2654f6990a8d969dedf03"
+}

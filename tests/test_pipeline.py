@@ -36,7 +36,7 @@ class PipelineUnitTests(unittest.TestCase):
 
     def test_committed_submission_matches_manifest(self) -> None:
         submission = ROOT / "submission.csv"
-        manifest_path = ROOT / "artifacts" / "archive_disagreement_v2" / "run_manifest.json"
+        manifest_path = ROOT / "artifacts" / "seed_bagged_challenger_v1" / "run_manifest.json"
         if not submission.exists() or not manifest_path.exists():
             self.skipTest("Final integration artifacts have not been generated")
         manifest = json.loads(manifest_path.read_text())

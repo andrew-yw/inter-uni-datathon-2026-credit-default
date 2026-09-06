@@ -2,7 +2,7 @@
 
 ## Selected approach
 
-The selected candidate is the model-only fallback reconstructed from the supplied archive. It combines a depth-5 CatBoost model, a 400-tree Random Forest, and a Laplace-approximated Bayesian logistic model, then applies an eight-parameter disagreement/calibration layer. All parameters derive only from the 24,000 organizer-provided labelled rows; no external labels, public solutions, source-table matching, or locked holdout are used.
+The selected candidate extends the model-only fallback reconstructed from the supplied archive. Its CatBoost branch averages four fixed seeds across two repayment-status representations, producing eight members in total. That branch is combined with a 400-tree Random Forest and a Laplace-approximated Bayesian logistic model, then passed through the archived eight-parameter disagreement/calibration layer. All parameters derive only from the 24,000 organizer-provided labelled rows; no external labels, public solutions, source-table matching, or locked holdout are used.
 
 ## Data cleaning and preprocessing
 
@@ -27,9 +27,10 @@ The reconstructed run produced:
 | Bayesian logistic | 0.426331 | 0.007107 | 0.785452 |
 | **Fixed archive blend** | **0.421507** | **0.006694** | **0.791486** |
 | **Disagreement replay** | **0.421371** | **0.006851** | **0.791591** |
+| **Seed-bagged disagreement** | **0.421138** | **0.006864** | **0.792039** |
 | OOF-refit blend, development-only | 0.421457 | 0.006637 | 0.791508 |
 
-The disagreement replay improves overall OOF log loss by **0.012703** over the 0.434075 logistic baseline. Because the deployed theta was developed from this training population, the archive's properly nested result—**0.421278**, versus **0.421442** for its base blend—is the preferred selection estimate.
+The selected seed bag improves overall OOF log loss by **0.012937** over the 0.434075 logistic baseline and by **0.000233** over the reconstructed single-seed disagreement model. It improves each of the five saved folds. The archived nested disagreement result remains useful historical evidence, while seed-bag performance is measured directly on the unchanged saved outer folds.
 
 Leaderboard score: **PENDING**. This integrity-safe CSV has not been uploaded by this code workflow; once submitted, record the returned score here without regenerating or editing `submission.csv`.
 
@@ -40,6 +41,10 @@ The base weights are 0.564248 CatBoost, 0.250365 Random Forest, and 0.185387 Bay
 Full-data CatBoost and RF test predictions reproduce the archive's frozen model-only matrix to numerical serialization precision; the Bayesian predictions differ by only 0.0000023 mean absolute error because the archived SciPy version is unavailable in the current runtime. The final disagreement probabilities reproduce the archived fallback with correlation 0.999999999994 and mean absolute difference 0.00000049. Detailed comparisons are saved under both versioned artifact directories.
 
 The disagreement adjustment is selected because its archived nested protocol improves all-model log loss by 0.000164 and the adapted replay improves by 0.000136. The archive did not preserve the inner-OOF matrices required to independently refit the eight coefficients, so this limitation and their exact provenance are disclosed. The archive's perfect hard-label output remains rejected because it reconstructed test labels from an external source table.
+
+## Seed-bagging audit
+
+The initial setup relied on one CatBoost seed despite Bayesian bootstrapping and random feature effects. Three additional seeds (`137`, `4099`, and `7919`) were evaluated for both numeric repayment severity and nominal repayment-status treatment. Equal averaging was selected because the loss curve was flat around a 40–60% view split and because it avoids fitting extra blend parameters. The resulting gain was positive in all five folds. Two additional RF seeds were tested but rejected: their averaged disagreement loss was no better than retaining the original forest.
 
 ## Additional boosting search
 
@@ -53,7 +58,7 @@ A non-negative 14-model OOF refit reached **0.421323**, an apparent gain of 0.00
 
 ## Final inference and post-processing
 
-After validation, every branch is refitted on all organizer-provided training rows. The three probabilities are combined using the fixed weights and passed through the disagreement equation. The only post-processing is clipping to `[1e-7, 1-1e-7]`, applied consistently to OOF and test probabilities. No manual row changes are made. The verified final SHA-256 is `a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed`.
+After validation, all eight CatBoost members and the retained RF/Bayesian branches are fitted on all organizer-provided training rows. The averaged CatBoost probability replaces the single-seed Cat branch before the fixed blend and disagreement equation. The only post-processing is clipping to `[1e-7, 1-1e-7]`, applied consistently to OOF and test probabilities. No manual row changes are made. The verified final SHA-256 is `ea8d1c1da154f88015368aaa3b5fc02bf960b77953a2654f6990a8d969dedf03`.
 
 ## Limitations
 

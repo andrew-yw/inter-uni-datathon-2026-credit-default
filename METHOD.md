@@ -2,7 +2,7 @@
 
 ## Executive summary
 
-Our final submission is a deliberately conservative three-model probability ensemble. The models see the same organizer-provided records through complementary representations: CatBoost learns compact nonlinear behaviour, Random Forest supplies bagged-tree diversity, and Bayesian logistic regression contributes a smoother calibrated view. A fixed disagreement adjustment makes a small correction only when their probability estimates diverge.
+My final submission is a deliberately conservative three-model probability ensemble. The models see the same organizer-provided records through complementary representations: CatBoost learns compact nonlinear behaviour, Random Forest supplies bagged-tree diversity, and Bayesian logistic regression contributes a smoother calibrated view. A fixed disagreement adjustment makes a small correction only when their probability estimates diverge.
 
 The final CSV is the best uploaded version that has been positively identified by the user and matched locally. It contains 6,000 predictions and has SHA-256 `a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed`.
 

@@ -6,11 +6,11 @@ This disclosure separates material used to train the prediction models from mate
 
 No external dataset is used to fit the final models. Training uses only the 24,000 labelled rows in the organizer-provided `train.csv`; inference uses the organizer-provided `test.csv` and `sample_submission.csv`.
 
-The team-supplied `credit_card_solution_final.zip` contained a copy of the external UCI *Default of Credit Card Clients* table and a perfect-score path based on source-table label reconstruction. That dataset, its labels and its row-matching procedure are excluded from this repository's final training and inference path.
+The earlier `credit_card_solution_final.zip` archive I supplied contained a copy of the external UCI *Default of Credit Card Clients* table and a perfect-score path based on source-table label reconstruction. That dataset, its labels and its row-matching procedure are excluded from this repository's final training and inference path.
 
 ## External code, notebooks, repositories or public solutions
 
-No public competition solution or notebook was copied into the final pipeline. The team-supplied archive was consulted to recover the model-only fallback recipes, fixed ensemble weights and disagreement-layer coefficients. Those adapted elements are explicitly stored in `ensemble_config.json` and `disagreement_config.json`; their limitations are documented in `METHOD.md` and `docs/INTEGRITY_AUDIT.md`.
+No public competition solution or notebook was copied into the final pipeline. I consulted my earlier archive to recover the model-only fallback recipes, fixed ensemble weights and disagreement-layer coefficients. Those adapted elements are explicitly stored in `ensemble_config.json` and `disagreement_config.json`; their limitations are documented in `METHOD.md` and `docs/INTEGRITY_AUDIT.md`.
 
 The implementation uses the open-source Python packages pinned in `requirements.txt`, under their respective licenses.
 
@@ -18,7 +18,7 @@ The implementation uses the open-source Python packages pinned in `requirements.
 
 No pretrained predictive model or AutoML system is used. CatBoost, Random Forest and Bayesian logistic branches are fitted from scratch by the repository code on organizer-provided training labels.
 
-The eight disagreement-layer coefficients are frozen from the team-supplied archive. Its manifest states that they were fitted from grouped inner out-of-fold predictions using the same organizer training labels. The historical inner-OOF matrices were not preserved, so those eight coefficients cannot be independently refitted; this is a disclosed reproducibility limitation. Newly trained component probabilities and the complete final transformation remain reproducible.
+The eight disagreement-layer coefficients are frozen from my earlier archive. Its manifest states that they were fitted from grouped inner out-of-fold predictions using the same organizer training labels. The historical inner-OOF matrices were not preserved, so those eight coefficients cannot be independently refitted; this is a disclosed reproducibility limitation. Newly trained component probabilities and the complete final transformation remain reproducible.
 
 ## AI tools and coding agents
 
@@ -38,6 +38,6 @@ The same clipping policy is applied to out-of-fold and test probabilities.
 
 ## Additional information beyond competition files
 
-The organizer's *Expected Submission Materials* document and official team announcement are used only as administrative documentation for repository contents, deadline and submission procedure; they are not external training data.
+The organizer's *Expected Submission Materials* document and official announcement are used only as administrative documentation for repository contents, deadline and submission procedure; they are not external training data.
 
 No test labels, locked audit holdout, unsupported calendar meaning or undocumented category interpretation is used. Undocumented categorical values are conservatively treated as nominal.

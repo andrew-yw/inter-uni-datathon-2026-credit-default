@@ -1,6 +1,6 @@
 # Final submission rules and checklist
 
-Sources: organizer-provided `Expected Submission Materials.pdf` and the official announcement supplied to the team on 6 September 2026. These are administrative requirements, not model-training data.
+Sources: organizer-provided `Expected Submission Materials.pdf` and the official announcement supplied to the entrant on 6 September 2026. These are administrative requirements, not model-training data.
 
 ## Deadline and one-submission rule
 
@@ -35,4 +35,4 @@ The submitted materials must plausibly reconstruct the full path from competitio
 - [x] No external source labels, UCI reconstruction data, secrets, or organizer raw data are tracked by Git.
 - [x] Methodology, final model settings, saved artifacts and required disclosure are included.
 - [ ] If available, add the exact numeric leaderboard score to `METHOD.md` without modifying the CSV. The score has not been provided and must not be guessed.
-- [ ] One designated team member submits the repository once before the deadline.
+- [ ] As the only team member, submit the repository once before the deadline.

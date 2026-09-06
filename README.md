@@ -1,6 +1,6 @@
 # Inter-Uni Datathon 2026 — Final Credit Default Submission
 
-This repository is the complete finalist-review package for our Stream 1 credit-default solution. It contains the final modelling code, immutable validation folds, model configuration, saved artifacts, methodology report, disclosure, and the exact leaderboard prediction file.
+This repository is the complete finalist-review package for my Stream 1 credit-default solution. I entered as a single-person team. The repository contains my final modelling code, immutable validation folds, model configuration, saved artifacts, methodology report, disclosure, and the exact leaderboard prediction file.
 
 ## Final submission at a glance
 
@@ -15,7 +15,7 @@ This repository is the complete finalist-review package for our Stream 1 credit-
 | Training data | Organizer-provided `train.csv` only |
 | Final ensemble | CatBoost + Random Forest + Bayesian logistic |
 
-The leaderboard score itself was not provided, so we do not invent or estimate it here. The reported 0.421371 is an out-of-fold development result, not a leaderboard score.
+The leaderboard score itself was not provided, so I do not invent or estimate it here. The reported 0.421371 is an out-of-fold development result, not a leaderboard score.
 
 ## Reproduce the exact file
 
@@ -141,6 +141,6 @@ DISCLOSURE.md                          required provenance disclosure
 
 Research-only alternatives remain versioned for auditability, but they are not part of the final reproduction command and do not replace `submission.csv`.
 
-## Team handoff
+## Final handoff
 
-The repository has been verified as public. One designated team member should submit this repository and the exact root `submission.csv`; the team should make only one finalist submission before midnight at the end of Sunday, 6 September 2026. If the exact numeric leaderboard score is available, add it to `METHOD.md` without regenerating or editing the prediction file.
+The repository has been verified as public. As the only team member, I should submit this repository and the exact root `submission.csv` once before midnight at the end of Sunday, 6 September 2026. If the exact numeric leaderboard score is available, I will add it to `METHOD.md` without regenerating or editing the prediction file.

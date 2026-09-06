@@ -147,4 +147,4 @@ Research-only alternatives remain versioned for auditability, but they are not p
 
 ## Final handoff
 
-The repository has been verified as public. As the only team member, I should submit this repository and the exact root `submission.csv` once before midnight at the end of Sunday, 6 September 2026. The official public score has been recorded without regenerating or editing the prediction file.
+The repository has been verified as public. As the only team member, I have submitted this repository and the exact root `submission.csv` once before midnight at the end of Sunday, 6 September 2026. The official public score has been recorded without regenerating or editing the prediction file.

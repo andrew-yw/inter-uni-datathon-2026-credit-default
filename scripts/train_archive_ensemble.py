@@ -41,6 +41,15 @@ from src.pipeline import (
 )
 
 
+def path_for_manifest(path: Path) -> str:
+    """Prefer repository-relative paths while supporting isolated audit runs."""
+
+    try:
+        return str(path.resolve().relative_to(ROOT.resolve()))
+    except ValueError:
+        return str(path.resolve())
+
+
 def metrics(y: np.ndarray, probability: np.ndarray) -> dict[str, float]:
     """Official log loss plus useful ranking and calibration diagnostics."""
 
@@ -339,7 +348,7 @@ def main() -> int:
         "saved_folds_sha256": actual_fold_hash,
         "input_sha256": {name: sha256_file(args.data_dir / name) for name in config["input_sha256"]},
         "submission": {
-            "path": str(args.submission.relative_to(ROOT)),
+            "path": path_for_manifest(args.submission),
             "sha256": submission_hash,
             "rows": len(submission),
             "minimum_probability": float(fixed_test.min()),

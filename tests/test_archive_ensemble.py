@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
+import pytest
 
-from scripts.train_archive_ensemble import fit_convex_weights, load_saved_folds
+from scripts.build_disagreement_submission import validate_retrained_oof
+from scripts.train_archive_ensemble import fit_convex_weights, load_saved_folds, path_for_manifest
 from src.archive_ensemble.blend import disagreement_adjustment, fixed_probability_blend
 from src.archive_ensemble.data import FEATURES
 from src.archive_ensemble.features import build_features, safe_ratio
+from src.pipeline import sha256_file
 
 
 def example_rows() -> pd.DataFrame:
@@ -73,3 +76,44 @@ def test_disagreement_blend_returns_finite_probabilities() -> None:
     adjusted = disagreement_adjustment(matrix, weights, np.zeros(8))
     np.testing.assert_allclose(adjusted, base)
     assert np.all((adjusted > 0) & (adjusted < 1))
+
+
+def test_manifest_path_supports_isolated_output(tmp_path) -> None:
+    external = tmp_path / "submission.csv"
+    assert path_for_manifest(external) == str(external.resolve())
+
+
+def test_retrained_oof_allows_only_documented_numeric_replay_noise(tmp_path) -> None:
+    reference_path = tmp_path / "reference.csv"
+    candidate_path = tmp_path / "candidate.csv"
+    reference = pd.DataFrame(
+        {
+            "client_id": ["a", "b"],
+            "target": [0, 1],
+            "fold": [0, 1],
+            "model": [0.2, 0.8],
+        }
+    )
+    candidate = reference.copy()
+    candidate.loc[0, "model"] += 1e-13
+    reference.to_csv(reference_path, index=False)
+    candidate.to_csv(candidate_path, index=False)
+
+    maximum = validate_retrained_oof(
+        candidate_path,
+        reference_path,
+        sha256_file(reference_path),
+        tolerance=2e-12,
+    )
+
+    assert 0 < maximum <= 2e-12
+
+    candidate.loc[0, "model"] += 1e-3
+    candidate.to_csv(candidate_path, index=False)
+    with pytest.raises(ValueError, match="drifted"):
+        validate_retrained_oof(
+            candidate_path,
+            reference_path,
+            sha256_file(reference_path),
+            tolerance=2e-12,
+        )

@@ -1,23 +1,29 @@
-# Inter-Uni Datathon 2026 - Credit Default Ensemble
+# Inter-Uni Datathon 2026 — Final Credit Default Submission
 
-This repository contains the integrity-safe final pipeline and proposed submission for Stream 1. The selected candidate reconstructs the honest model-only portion of the supplied archive: CatBoost, Random Forest, and Bayesian logistic models trained solely on organizer-provided labels, followed by the archive's fixed blend and small disagreement-calibration layer. The archive's external source-table label reconstruction is deliberately excluded.
+This repository is the complete finalist-review package for our Stream 1 credit-default solution. It contains the final modelling code, immutable validation folds, model configuration, saved artifacts, methodology report, disclosure, and the exact leaderboard prediction file.
 
-## Final files
+## Final submission at a glance
 
-- `submission.csv` - the exact proposed file to upload and submit for finalist review.
-- `scripts/train_archive_ensemble.py` - trains all three models on the saved folds, reports OOF results, refits on all training rows, and regenerates the base-blend component artifacts.
-- `scripts/build_disagreement_submission.py` - applies the audited eight-parameter disagreement layer and regenerates the final `submission.csv`.
-- `scripts/train_seed_bagged_challenger.py` - reproduces a seed-bagged research challenger that improved CV but was rejected after worse competition-test log loss.
-- `ensemble_config.json` - reviewed model recipes, fixed blend weights, fold hash, input hashes, and final output hash.
-- `artifacts/archive_ensemble_v1/` - OOF/test probabilities, fold and overall metrics, correlations, feature importance, fitted models, and run manifests.
-- `scripts/train_and_submit.py` - retained interpretable logistic baseline; it writes its separate versioned submission under `submissions/`.
-- `METHOD.md` - methodology, results, limitations, and model-selection rationale.
-- `DISCLOSURE.md` - external-data, software, AI-tool, and post-processing disclosure.
-- `docs/SUBMISSION_RULES.md` - checklist transcribed from the organizer PDF and announcement.
+| Item | Final value |
+| --- | --- |
+| Prediction file | [`submission.csv`](submission.csv) |
+| Rows | 6,000 |
+| SHA-256 | `a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed` |
+| Status | Byte-for-byte match to the user-confirmed best uploaded Kaggle file |
+| Development replay OOF log loss | 0.421371 |
+| Validation | Five immutable grouped folds, seed 2026 |
+| Training data | Organizer-provided `train.csv` only |
+| Final ensemble | CatBoost + Random Forest + Bayesian logistic |
 
-## Reproduce the exact submission
+The leaderboard score itself was not provided, so we do not invent or estimate it here. The reported 0.421371 is an out-of-fold development result, not a leaderboard score.
 
-Use Python 3.13.2. From the repository root:
+## Reproduce the exact file
+
+The cleanest review path is one command. It retrains all three branches from the organizer files in an isolated temporary directory, applies the frozen blend and disagreement layer, verifies the expected hash, and only then replaces the requested output.
+
+### 1. Create the pinned environment
+
+Python 3.13.2 was used for the verified run.
 
 ```bash
 python3 -m venv .venv
@@ -25,25 +31,116 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 
-Download the three organizer competition files and place them in `data/raw/` as described in `data/raw/README.md`. Then run:
+### 2. Add the organizer files
+
+Place these files in `data/raw/`:
+
+- `train.csv`
+- `test.csv`
+- `sample_submission.csv`
+
+Their SHA-256 fingerprints and schemas are checked before modelling. The files are not published in this repository; see [`data/raw/README.md`](data/raw/README.md).
+
+### 3. Train, infer and verify
 
 ```bash
-python scripts/train_archive_ensemble.py
-python scripts/build_disagreement_submission.py
+python scripts/reproduce_final_submission.py
 python -m pytest -q
 shasum -a 256 submission.csv
 ```
 
-The final hash must equal `expected_submission_sha256` in `disagreement_config.json`. Input hashes, package versions, fold scores, and component hashes are recorded in the versioned artifact directories. The training entry points read the committed, hash-checked `artifacts/saved_folds.csv` and refuse to recreate missing folds.
+The final hash must be:
 
-The selected disagreement reconstruction has replay OOF log loss **0.421371**; the archive's nested estimate is **0.421278**. A seed-bagged challenger reached 0.421138 in CV but increased competition-test log loss, so it is retained only as a rejected experiment. The fixed base blend scores **0.421507**, versus **0.434075** for the logistic baseline.
+```text
+a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed
+```
 
-Optional booster research is reproducible with `requirements-research.txt`, `scripts/research_boosters.py`, and `scripts/analyze_booster_screen.py`. On macOS, LightGBM also requires Homebrew `libomp`. These experiments are documented but do not replace the selected submission because their best same-OOF blend gain is only 0.000184 and is not nested validation.
+On the reference six-thread environment, full retraining takes about four minutes. Change the CPU limit with `--threads`; the script accepts negligible OOF replay noise only within the documented `2e-12` absolute tolerance, while the test component and final CSV must still match their exact hashes.
 
-The independent feature-engineering archive is documented in `docs/experiments/feature_engineering.md`. It tests eight feature-block ablations plus four-seed stability without accessing test rows or changing `submission.csv`; the observed gains were too seed-sensitive to promote.
+## How the solution works
 
-## Submission status
+```mermaid
+flowchart LR
+    A["Organizer train/test files"] --> B["Hash and schema checks"]
+    B --> C["Row-local behavioural features"]
+    C --> D["Five saved grouped folds"]
+    D --> E["CatBoost"]
+    D --> F["Random Forest"]
+    D --> G["Bayesian logistic"]
+    E --> H["Fixed probability blend"]
+    F --> H
+    G --> H
+    H --> I["Frozen disagreement adjustment"]
+    I --> J["Clip to [1e-7, 1-1e-7]"]
+    J --> K["submission.csv"]
+```
 
-The repository file is a proposed replacement for the ineligible perfect-score output. `submission.csv` is the restored single-seed disagreement ensemble; the rejected seed bag, fixed base blend, and logistic files remain versioned under `submissions/`. To satisfy the organizer PDF, upload the root `submission.csv` and submit this same public repository for review. Record the returned leaderboard score in `METHOD.md` without modifying the CSV.
+Feature construction focuses on repayment-status severity and persistence, utilization, payment coverage, underpayment frequency, bill/payment changes, trends, volatility and a small set of domain-motivated interactions. It uses no labels, identifiers, target encoding or fitted population statistics. Undocumented demographic categories are treated as nominal, and no unsupported calendar or deployment interpretation is assumed.
 
-Only one team member should submit, and the team should submit only once before midnight at the end of Sunday, 6 September 2026.
+| Branch | Core settings | Fixed base weight |
+| --- | --- | ---: |
+| CatBoost | depth 5, learning rate 0.035, L2 6, Bayesian bootstrap, 437-tree final fit | 0.564248 |
+| Random Forest | 400 trees, `max_features=0.5`, `min_samples_leaf=30`, bootstrap, `max_samples=0.85` | 0.250365 |
+| Bayesian logistic | behavioural representation, 5 knots, interaction splines, prior precision 60 | 0.185387 |
+
+The exact recipes are in [`ensemble_config.json`](ensemble_config.json). The eight frozen disagreement coefficients, probability-clipping rule and final hash are in [`disagreement_config.json`](disagreement_config.json).
+
+## Why this version was selected
+
+| Candidate | OOF log loss | Decision |
+| --- | ---: | --- |
+| Logistic baseline | 0.434075 | Interpretable baseline |
+| Fixed three-model blend | 0.421507 | Strong base ensemble |
+| **Selected disagreement ensemble** | **0.421371** | **Final submission** |
+| Seed-bagged challenger | 0.421138 | Rejected after worse competition-test result |
+| Best nested full-refit policy | 0.421617 | Rejected; worse than current |
+
+The seed-bagged candidate looked slightly better in local CV, but the user reported worse competition-test log loss. The selected file remains the best uploaded result that has been positively identified and matched locally. Full experimental context and limitations are in [`METHOD.md`](METHOD.md).
+
+## Submission-material map
+
+| Organizer requirement | Repository location |
+| --- | --- |
+| Final notebook / methodology report | [`METHOD.md`](METHOD.md) |
+| Complete source code | [`scripts/`](scripts/) and [`src/`](src/) |
+| Exact final prediction file | [`submission.csv`](submission.csv) |
+| Processed / cleaned data | Generated in memory by [`src/archive_ensemble/features.py`](src/archive_ensemble/features.py) and [`src/archive_ensemble/features_v2.py`](src/archive_ensemble/features_v2.py); immutable fold assignments are committed in [`artifacts/saved_folds.csv`](artifacts/saved_folds.csv) |
+| Reproduction instructions | This README and [`data/raw/README.md`](data/raw/README.md) |
+| Final model information | [`METHOD.md`](METHOD.md), [`ensemble_config.json`](ensemble_config.json), [`disagreement_config.json`](disagreement_config.json) |
+| Saved models and evaluation artifacts | [`artifacts/archive_ensemble_v1/`](artifacts/archive_ensemble_v1/) and [`artifacts/archive_disagreement_v2/`](artifacts/archive_disagreement_v2/) |
+| Required disclosure | [`DISCLOSURE.md`](DISCLOSURE.md) |
+| Organizer checklist | [`docs/SUBMISSION_RULES.md`](docs/SUBMISSION_RULES.md) |
+
+No standalone cleaned feature table is required: preprocessing and feature generation are deterministic code paths and are regenerated during training. The saved folds are never recreated or silently repaired.
+
+## Integrity notes
+
+- No external dataset or external label is used to fit the final models.
+- No test label or locked audit holdout is accessed.
+- No prediction row is manually changed.
+- The same `[1e-7, 1-1e-7]` clipping policy is applied to OOF and test probabilities.
+- The source archive's external source-table label reconstruction and perfect-score path are excluded.
+- Cross-validation estimates generalization; it does not guarantee leaderboard or deployment performance.
+
+See [`DISCLOSURE.md`](DISCLOSURE.md) and [`docs/INTEGRITY_AUDIT.md`](docs/INTEGRITY_AUDIT.md) for provenance and integrity details.
+
+## Repository structure
+
+```text
+submission.csv                         exact final leaderboard file
+scripts/reproduce_final_submission.py one-command end-to-end reproduction
+scripts/train_archive_ensemble.py     training, OOF validation and full-data refits
+scripts/build_disagreement_submission.py final blend, post-processing and CSV output
+src/archive_ensemble/                  feature and model implementations
+artifacts/saved_folds.csv              immutable five-fold assignments
+artifacts/archive_ensemble_v1/         component metrics, probabilities and models
+artifacts/archive_disagreement_v2/     final-ensemble audit artifacts
+METHOD.md                              methodology and model-selection report
+DISCLOSURE.md                          required provenance disclosure
+```
+
+Research-only alternatives remain versioned for auditability, but they are not part of the final reproduction command and do not replace `submission.csv`.
+
+## Team handoff
+
+The repository has been verified as public. One designated team member should submit this repository and the exact root `submission.csv`; the team should make only one finalist submission before midnight at the end of Sunday, 6 September 2026. If the exact numeric leaderboard score is available, add it to `METHOD.md` without regenerating or editing the prediction file.

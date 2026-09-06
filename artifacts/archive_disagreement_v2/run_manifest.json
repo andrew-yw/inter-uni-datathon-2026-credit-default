@@ -37,6 +37,7 @@
     "rf_behavior_leaf30",
     "bayes_laplace_curved"
   ],
+  "oof_replay_max_abs_difference": 0.0,
   "probability_clipping_applied_to_oof_and_test": true,
   "source_label_matching_used": false,
   "submission": {

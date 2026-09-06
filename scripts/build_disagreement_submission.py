@@ -20,6 +20,52 @@ from src.archive_ensemble.blend import disagreement_adjustment, fixed_probabilit
 from src.pipeline import ID_COLUMN, PREDICTION_COLUMN, load_competition_data, sha256_file
 
 
+def path_for_manifest(path: Path) -> str:
+    """Prefer repository-relative paths while supporting isolated audit runs."""
+
+    try:
+        return str(path.resolve().relative_to(ROOT.resolve()))
+    except ValueError:
+        return str(path.resolve())
+
+
+def validate_retrained_oof(
+    candidate_path: Path,
+    reference_path: Path,
+    expected_reference_hash: str,
+    tolerance: float,
+) -> float:
+    """Accept only negligible cross-platform floating-point replay differences.
+
+    The RF replay can differ by one floating-point ULP under parallel reduction,
+    even though test probabilities serialize identically. IDs, labels, folds and
+    columns must remain exact; every probability must stay within the documented
+    absolute tolerance of the committed reference artifact.
+    """
+
+    if sha256_file(reference_path) != expected_reference_hash:
+        raise ValueError("Committed OOF reference artifact changed")
+    reference = pd.read_csv(reference_path, dtype={ID_COLUMN: "string"})
+    candidate = pd.read_csv(candidate_path, dtype={ID_COLUMN: "string"})
+    if list(candidate.columns) != list(reference.columns):
+        raise ValueError("Retrained OOF columns differ from the committed reference")
+    exact_columns = [ID_COLUMN, "target", "fold"]
+    for column in exact_columns:
+        if not candidate[column].equals(reference[column]):
+            raise ValueError(f"Retrained OOF {column} values differ from the reference")
+    probability_columns = [column for column in reference if column not in exact_columns]
+    difference = np.abs(
+        candidate[probability_columns].to_numpy(dtype=float)
+        - reference[probability_columns].to_numpy(dtype=float)
+    )
+    maximum = float(difference.max(initial=0.0))
+    if not np.isfinite(maximum) or maximum > tolerance:
+        raise ValueError(
+            f"Retrained OOF probabilities drifted by {maximum:.3g}; tolerance is {tolerance:.3g}"
+        )
+    return maximum
+
+
 def metric_row(y: np.ndarray, probability: np.ndarray) -> dict[str, float]:
     return {
         "log_loss": float(log_loss(y, probability, labels=[0, 1])),
@@ -32,19 +78,34 @@ def metric_row(y: np.ndarray, probability: np.ndarray) -> dict[str, float]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=ROOT / "disagreement_config.json")
+    parser.add_argument("--data-dir", type=Path, default=ROOT / "data" / "raw")
     parser.add_argument("--output", type=Path, default=ROOT / "submission.csv")
     parser.add_argument("--artifacts-dir", type=Path, default=ROOT / "artifacts" / "archive_disagreement_v2")
+    parser.add_argument("--component-oof", type=Path)
+    parser.add_argument("--component-test", type=Path)
     args = parser.parse_args()
 
     config = json.loads(args.config.read_text(encoding="utf-8"))
     ensemble_config = json.loads((ROOT / "ensemble_config.json").read_text(encoding="utf-8"))
-    data = load_competition_data(ROOT / "data" / "raw", ensemble_config["input_sha256"])
+    data = load_competition_data(args.data_dir, ensemble_config["input_sha256"])
     component = config["component_artifacts"]
-    oof_path, test_path = ROOT / component["oof_path"], ROOT / component["test_path"]
-    for path, expected in ((oof_path, component["oof_sha256"]), (test_path, component["test_sha256"])):
-        actual = sha256_file(path)
-        if actual != expected:
-            raise ValueError(f"Component prediction artifact changed: {path}: {actual}")
+    reference_oof_path = ROOT / component["oof_path"]
+    oof_path = args.component_oof or reference_oof_path
+    test_path = args.component_test or ROOT / component["test_path"]
+    oof_hash = sha256_file(oof_path)
+    oof_replay_max_abs_difference = 0.0
+    if oof_hash != component["oof_sha256"]:
+        if args.component_oof is None:
+            raise ValueError(f"Component prediction artifact changed: {oof_path}: {oof_hash}")
+        oof_replay_max_abs_difference = validate_retrained_oof(
+            oof_path,
+            reference_oof_path,
+            component["oof_sha256"],
+            float(component["oof_replay_absolute_tolerance"]),
+        )
+    test_hash = sha256_file(test_path)
+    if test_hash != component["test_sha256"]:
+        raise ValueError(f"Component prediction artifact changed: {test_path}: {test_hash}")
 
     oof_source = pd.read_csv(oof_path, dtype={ID_COLUMN: "string"})
     test_source = pd.read_csv(test_path, dtype={ID_COLUMN: "string"})
@@ -117,9 +178,13 @@ def main() -> int:
             "warning": "Theta was historically developed from this training population; use the archived nested score as the selection estimate.",
         },
         "archive_nested_validation": config["archive_training_provenance"],
-        "component_sha256": {str(oof_path.relative_to(ROOT)): sha256_file(oof_path), str(test_path.relative_to(ROOT)): sha256_file(test_path)},
+        "component_sha256": {
+            path_for_manifest(oof_path): sha256_file(oof_path),
+            path_for_manifest(test_path): sha256_file(test_path),
+        },
+        "oof_replay_max_abs_difference": oof_replay_max_abs_difference,
         "submission": {
-            "path": str(args.output.relative_to(ROOT)),
+            "path": path_for_manifest(args.output),
             "sha256": digest,
             "rows": len(submission),
             "minimum_probability": float(adjusted_test.min()),

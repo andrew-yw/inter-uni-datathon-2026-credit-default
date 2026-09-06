@@ -28,10 +28,11 @@ The submitted materials must plausibly reconstruct the full path from competitio
 
 ## Final pre-submission checklist
 
-- [ ] `python scripts/train_archive_ensemble.py` completes from the pinned environment.
-- [ ] `submission.csv` hash matches `disagreement_config.json` and `artifacts/archive_disagreement_v2/run_manifest.json`.
-- [ ] The exact same `submission.csv` has been uploaded to the competition.
-- [ ] The leaderboard score has been recorded in `METHOD.md` without modifying the CSV.
-- [ ] Repository visibility is public.
-- [ ] No external source labels, UCI reconstruction data, secrets, or prohibited raw data are committed.
+- [x] `python scripts/reproduce_final_submission.py` completes from the pinned environment and retrains every component.
+- [x] `submission.csv` hash matches `disagreement_config.json` and `artifacts/archive_disagreement_v2/run_manifest.json`.
+- [x] The repository file is byte-for-byte identical to the user-confirmed best uploaded competition file.
+- [x] Repository visibility is `PUBLIC`: <https://github.com/andrew-yw/inter-uni-datathon-2026-credit-default>.
+- [x] No external source labels, UCI reconstruction data, secrets, or organizer raw data are tracked by Git.
+- [x] Methodology, final model settings, saved artifacts and required disclosure are included.
+- [ ] If available, add the exact numeric leaderboard score to `METHOD.md` without modifying the CSV. The score has not been provided and must not be guessed.
 - [ ] One designated team member submits the repository once before the deadline.

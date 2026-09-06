@@ -1,14 +1,28 @@
 # Final methodology report
 
+## Executive summary
+
+Our final submission is a deliberately conservative three-model probability ensemble. The models see the same organizer-provided records through complementary representations: CatBoost learns compact nonlinear behaviour, Random Forest supplies bagged-tree diversity, and Bayesian logistic regression contributes a smoother calibrated view. A fixed disagreement adjustment makes a small correction only when their probability estimates diverge.
+
+The final CSV is the best uploaded version that has been positively identified by the user and matched locally. It contains 6,000 predictions and has SHA-256 `a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed`.
+
 ## Selected approach
 
 The selected candidate is the model-only fallback reconstructed from the supplied archive. It combines a depth-5 CatBoost model, a 400-tree Random Forest, and a Laplace-approximated Bayesian logistic model, then passes them through the archived eight-parameter disagreement/calibration layer. All parameters derive only from the 24,000 organizer-provided labelled rows; no external labels, public solutions, source-table matching, or locked holdout are used.
 
+| Branch | Final configuration | Role in the ensemble |
+| --- | --- | --- |
+| CatBoost | depth 5; learning rate 0.035; L2 6; Bayesian bootstrap 0.5; 437-tree full-data fit; seed 2026 | Main nonlinear learner |
+| Random Forest | 400 trees; `max_features=0.5`; `min_samples_leaf=30`; bootstrap; `max_samples=0.85`; seed 2026 | Bagged-tree diversity |
+| Bayesian logistic | behavioural representation; 5 knots; interaction splines; prior precision 60 | Smooth probabilistic complement |
+
+The fixed base weights are 0.564248, 0.250365 and 0.185387 respectively. Exact unrounded values are versioned in `ensemble_config.json` and `disagreement_config.json`.
+
 ## Data cleaning and preprocessing
 
-The loader verifies the exact SHA-256, schema, row identifiers, target classes, missingness, train/test separation, and official submission order before training. Identifiers and the target are excluded through a 23-feature allowlist.
-
 The loader verifies exact SHA-256 hashes, schema, identifiers, class labels, and train/test separation. Identifiers and the target are excluded through a 23-feature allowlist. Demographic codes are treated as nominal. The RF's one-hot encoder is fitted inside each training fold; CatBoost receives the same nominal demographics directly. Repayment status remains an ordered severity signal because the feature design uses only comparisons such as positive delinquency and severity thresholds.
+
+There is no separately materialized cleaned-feature dataset. Feature tables are deterministically regenerated in memory from the organizer files. The only processed data needed for validation are the committed `client_id`-to-fold assignments in `artifacts/saved_folds.csv`.
 
 ## Feature engineering
 
@@ -31,6 +45,8 @@ The reconstructed run produced:
 | OOF-refit blend, development-only | 0.421457 | 0.006637 | 0.791508 |
 
 The selected disagreement replay improves overall OOF log loss by **0.012703** over the 0.434075 logistic baseline. The seed bag improved each saved fold by 0.000161–0.000314, but the user reported that it increased log loss on the competition test. It is therefore rejected rather than selected from CV alone.
+
+A separate nested full-refit experiment used the four outer-training folds to select CatBoost tree counts before refitting on all four and evaluating the untouched fifth fold. Its best policy scored 0.421617, worse than the current 0.421371 replay, so it was not promoted. The production inference model already fits all 24,000 labelled rows; the experiment did not unlock unused final-training data.
 
 Leaderboard status: **user-confirmed best uploaded submission**. The downloaded Kaggle file was verified byte-for-byte against the selected repository `submission.csv` using SHA-256 `a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed`. The exact numeric leaderboard score was not provided.
 
@@ -59,6 +75,14 @@ A non-negative 14-model OOF refit reached **0.421323**, an apparent gain of 0.00
 ## Final inference and post-processing
 
 After validation, the selected CatBoost, RF, and Bayesian branches are fitted on all organizer-provided training rows. Their probabilities pass through the fixed blend and disagreement equation. The only post-processing is clipping to `[1e-7, 1-1e-7]`, applied consistently to OOF and test probabilities. No manual row changes are made. The restored final SHA-256 is `a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed`.
+
+The full reviewer-facing path is:
+
+```bash
+python scripts/reproduce_final_submission.py
+```
+
+This command trains into an isolated temporary directory, validates the saved folds and component artifacts, generates the final CSV, checks its frozen hash, and only then copies it to `submission.csv`. The verified six-thread runtime is approximately four minutes on the development machine.
 
 ## Limitations
 

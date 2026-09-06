@@ -1,0 +1,16 @@
+{
+  "candidate_count": 8,
+  "current_final_log_loss": 0.4213712694455315,
+  "external_training_data_used": false,
+  "saved_folds_sha256": "0114bd7904a22befbd735df03288a302d95b93d63b606630d1f25107157772e4",
+  "source_label_matching_used": false,
+  "test_data_accessed": false,
+  "stability_check": {
+    "seeds": [2026, 137, 4099, 7919],
+    "trajectory_mean_paired_gain": -0.000023092520856,
+    "all_no_interactions_mean_paired_gain": 0.000034126273422,
+    "all_no_interactions_equal_seed_average_gain": 0.0000264941587093,
+    "decision": "archive_only_no_test_candidate"
+  },
+  "version": "feature_engineering_v1"
+}

@@ -1,0 +1,18 @@
+{
+  "version": "feature_engineering_v1",
+  "base_feature_mode": "v2:engineered:status,repayment,cashflow,utilization",
+  "model": "archive cat_behavior_d5 recipe",
+  "seed": 2026,
+  "candidates": {
+    "trajectory": ["trajectory"],
+    "coverage": ["coverage"],
+    "trends": ["trends"],
+    "bands": ["bands"],
+    "interactions": ["interactions"],
+    "all_numeric": ["trajectory", "coverage", "trends"],
+    "all_no_interactions": ["trajectory", "coverage", "trends", "bands"],
+    "all_features": ["trajectory", "coverage", "trends", "bands", "interactions"]
+  },
+  "selection_rule": "Compare both CatBoost OOF log loss and final disagreement loss after replacing only the CatBoost branch; do not touch test inference during screening.",
+  "probability_clip": 1e-7
+}

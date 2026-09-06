@@ -40,6 +40,8 @@ The selected disagreement reconstruction has replay OOF log loss **0.421371**; t
 
 Optional booster research is reproducible with `requirements-research.txt`, `scripts/research_boosters.py`, and `scripts/analyze_booster_screen.py`. On macOS, LightGBM also requires Homebrew `libomp`. These experiments are documented but do not replace the selected submission because their best same-OOF blend gain is only 0.000184 and is not nested validation.
 
+The independent feature-engineering archive is documented in `docs/experiments/feature_engineering.md`. It tests eight feature-block ablations plus four-seed stability without accessing test rows or changing `submission.csv`; the observed gains were too seed-sensitive to promote.
+
 ## Submission status
 
 The repository file is a proposed replacement for the ineligible perfect-score output. `submission.csv` is the restored single-seed disagreement ensemble; the rejected seed bag, fixed base blend, and logistic files remain versioned under `submissions/`. To satisfy the organizer PDF, upload the root `submission.csv` and submit this same public repository for review. Record the returned leaderboard score in `METHOD.md` without modifying the CSV.

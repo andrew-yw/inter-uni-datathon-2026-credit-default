@@ -1,0 +1,57 @@
+{
+  "external_training_data_used": false,
+  "fold_mean": {
+    "brier": 0.13575589616928296,
+    "log_loss": 0.43407498352082124,
+    "pr_auc": 0.5458747596752238,
+    "roc_auc": 0.772717517405215
+  },
+  "fold_std": {
+    "brier": 0.0023013982671837912,
+    "log_loss": 0.005795305137298806,
+    "pr_auc": 0.013850965571458823,
+    "roc_auc": 0.00812016362932951
+  },
+  "input_sha256": {
+    "sample_submission.csv": "7650a4457be9a81c8bc11d570cf2ae785bff502c4f00f586f8c6733c4a6964e6",
+    "test.csv": "23ac82039abb86c31922ddae000e6ee853cf4c4b2cd086ce10d10022313a2c09",
+    "train.csv": "e941523a7928f201610a81ea123754fd92f8a54b42d887de1cf3eeb8f94a5c40"
+  },
+  "manual_prediction_postprocessing": false,
+  "model": {
+    "C": 0.3,
+    "max_iter": 2500,
+    "name": "regularized_logistic_interpretable_v1",
+    "penalty": "l2",
+    "solver": "lbfgs"
+  },
+  "overall_oof": {
+    "brier": 0.13575579298469664,
+    "log_loss": 0.4340746432597001,
+    "pr_auc": 0.5446675809580823,
+    "roc_auc": 0.7724070807288632
+  },
+  "probability_clip": 1e-07,
+  "source_label_matching_used": false,
+  "submission": {
+    "maximum_probability": 0.9393106301020175,
+    "mean_probability": 0.21827837552429322,
+    "minimum_probability": 0.015258570751684295,
+    "path": "submission.csv",
+    "rows": 6000,
+    "sha256": "ef4d2e1519c32c4b0bfdc52f9292060f684d6dec1d39dd528e2bdb847ca6a26e"
+  },
+  "validation": {
+    "grouping": "identical 23-feature rows",
+    "method": "StratifiedGroupKFold",
+    "n_splits": 5,
+    "seed": 2026
+  },
+  "versions": {
+    "joblib": "1.5.3",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "python": "3.13.2",
+    "scikit_learn": "1.9.0"
+  }
+}

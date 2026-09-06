@@ -1,0 +1,14 @@
+# Competition inputs must be obtained from the organizers and are not published.
+data/raw/*.csv
+!data/raw/README.md
+!data/raw/.gitkeep
+
+# Local environments and generated caches.
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+
+# The trained estimator is inexpensive to regenerate and can be version-sensitive.
+artifacts/final_model.joblib

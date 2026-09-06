@@ -1,0 +1,28 @@
+{
+  "project": "Inter-Uni Datathon 2026 - Stream 1",
+  "model": {
+    "name": "regularized_logistic_interpretable_v1",
+    "C": 0.3,
+    "penalty": "l2",
+    "solver": "lbfgs",
+    "max_iter": 2500
+  },
+  "validation": {
+    "method": "StratifiedGroupKFold",
+    "n_splits": 5,
+    "seed": 2026,
+    "grouping": "identical 23-feature rows"
+  },
+  "probability_clip": 1e-7,
+  "serialization": {
+    "probability_digits": 10,
+    "line_ending": "LF",
+    "encoding": "UTF-8"
+  },
+  "input_sha256": {
+    "train.csv": "e941523a7928f201610a81ea123754fd92f8a54b42d887de1cf3eeb8f94a5c40",
+    "test.csv": "23ac82039abb86c31922ddae000e6ee853cf4c4b2cd086ce10d10022313a2c09",
+    "sample_submission.csv": "7650a4457be9a81c8bc11d570cf2ae785bff502c4f00f586f8c6733c4a6964e6"
+  },
+  "expected_submission_sha256": "ef4d2e1519c32c4b0bfdc52f9292060f684d6dec1d39dd528e2bdb847ca6a26e"
+}

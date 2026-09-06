@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 
 from scripts.train_archive_ensemble import fit_convex_weights, load_saved_folds
+from src.archive_ensemble.blend import disagreement_adjustment, fixed_probability_blend
 from src.archive_ensemble.data import FEATURES
 from src.archive_ensemble.features import build_features, safe_ratio
 
@@ -63,3 +64,12 @@ def test_saved_folds_keep_duplicate_profiles_together(tmp_path) -> None:
     saved.to_csv(path, index=False)
     folds = load_saved_folds(path, train, 2)
     assert folds.tolist() == [0, 1, 0]
+
+
+def test_disagreement_blend_returns_finite_probabilities() -> None:
+    matrix = np.array([[0.1, 0.15, 0.2], [0.7, 0.8, 0.6]])
+    weights = [0.5, 0.3, 0.2]
+    base = fixed_probability_blend(matrix, weights)
+    adjusted = disagreement_adjustment(matrix, weights, np.zeros(8))
+    np.testing.assert_allclose(adjusted, base)
+    assert np.all((adjusted > 0) & (adjusted < 1))

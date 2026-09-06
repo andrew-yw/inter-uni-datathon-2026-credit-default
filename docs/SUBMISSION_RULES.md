@@ -29,7 +29,7 @@ The submitted materials must plausibly reconstruct the full path from competitio
 ## Final pre-submission checklist
 
 - [ ] `python scripts/train_archive_ensemble.py` completes from the pinned environment.
-- [ ] `submission.csv` hash matches `ensemble_config.json` and `artifacts/archive_ensemble_v1/run_manifest.json`.
+- [ ] `submission.csv` hash matches `disagreement_config.json` and `artifacts/archive_disagreement_v2/run_manifest.json`.
 - [ ] The exact same `submission.csv` has been uploaded to the competition.
 - [ ] The leaderboard score has been recorded in `METHOD.md` without modifying the CSV.
 - [ ] Repository visibility is public.

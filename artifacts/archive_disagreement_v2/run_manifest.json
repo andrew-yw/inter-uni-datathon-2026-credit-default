@@ -1,0 +1,62 @@
+{
+  "archive_nested_validation": {
+    "base_nested_oof_log_loss": 0.42144188934659177,
+    "nested_oof_log_loss": 0.42127818850185017,
+    "protocol": "Five grouped outer folds; meta coefficients fitted on each outer-training partition's inner OOF",
+    "screen_size": 12,
+    "warning": "Original inner-OOF matrices were not included in the archive, so nested coefficient fitting cannot be independently rerun."
+  },
+  "base_weights": [
+    0.5642478395498848,
+    0.25036472159642154,
+    0.18538743885369374
+  ],
+  "component_sha256": {
+    "artifacts/archive_ensemble_v1/oof_predictions.csv": "8b2a006cd744e4b04dc7e48f6aeb6ad7e17774bc930a3d9749602ebddea8c4c9",
+    "artifacts/archive_ensemble_v1/test_predictions.csv": "2a3fc253172d3f8e21de5db75d6ef441eb514d8d1e38d1468afd2057bea921a9"
+  },
+  "development_replay_oof": {
+    "base": {
+      "brier": 0.13214406137771126,
+      "log_loss": 0.42150702434803894,
+      "pr_auc": 0.568126379640051,
+      "roc_auc": 0.7914862513215314
+    },
+    "disagreement": {
+      "brier": 0.13211337336054094,
+      "log_loss": 0.4213712694455315,
+      "pr_auc": 0.5682950204099475,
+      "roc_auc": 0.7915911384077312
+    },
+    "log_loss_gain": 0.0001357549025074456,
+    "warning": "Theta was historically developed from this training population; use the archived nested score as the selection estimate."
+  },
+  "external_training_data_used": false,
+  "model_order": [
+    "cat_behavior_d5",
+    "rf_behavior_leaf30",
+    "bayes_laplace_curved"
+  ],
+  "probability_clipping_applied_to_oof_and_test": true,
+  "source_label_matching_used": false,
+  "submission": {
+    "maximum_probability": 0.8925276237959009,
+    "mean_probability": 0.21933381306857563,
+    "minimum_probability": 0.012112284202575364,
+    "path": "submission.csv",
+    "rows": 6000,
+    "sha256": "a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed"
+  },
+  "test_labels_accessed": false,
+  "theta": [
+    0.027560381071873623,
+    -0.03583676916288375,
+    0.08385786451126245,
+    -0.028260044234833043,
+    0.05328276996801671,
+    0.03780465414424512,
+    -0.11734334163012558,
+    0.06504030025776479
+  ],
+  "version": "archive_disagreement_v2"
+}

@@ -1,0 +1,8 @@
+{
+  "archive_fallback_sha256": "594011c0e0357b269aa7b2ee4ea7b94b4e9e77adccea7a179f27c5f1e5d2809e",
+  "comparison": "Rebuilt disagreement submission probabilities versus the archive's frozen fallback probabilities",
+  "mean_absolute_probability_difference": 4.864041004891481e-7,
+  "maximum_absolute_probability_difference": 8.268467365346588e-6,
+  "prediction_correlation": 0.9999999999940075,
+  "explanation": "Small numerical drift originates in the rebuilt Bayesian component; CatBoost and RF full-fit predictions reproduce to serialization precision."
+}

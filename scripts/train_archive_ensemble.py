@@ -140,7 +140,11 @@ def main() -> int:
     parser.add_argument("--config", type=Path, default=ROOT / "ensemble_config.json")
     parser.add_argument("--threads", type=int, default=6)
     parser.add_argument("--output-dir", type=Path, default=ROOT / "artifacts" / "archive_ensemble_v1")
-    parser.add_argument("--submission", type=Path, default=ROOT / "submission.csv")
+    parser.add_argument(
+        "--submission",
+        type=Path,
+        default=ROOT / "submissions" / "submission_archive_blend_v1.csv",
+    )
     args = parser.parse_args()
 
     started = time.perf_counter()

@@ -2,7 +2,7 @@
 
 ## Selected approach
 
-The selected candidate is a three-branch probability ensemble reconstructed from the honest fallback section of the supplied archive. It combines a depth-5 CatBoost model, a 400-tree Random Forest, and a Laplace-approximated Bayesian logistic model. All branches use only the 24,000 organizer-provided labelled rows; no external labels, public solutions, source-table matching, or locked holdout are used.
+The selected candidate is the model-only fallback reconstructed from the supplied archive. It combines a depth-5 CatBoost model, a 400-tree Random Forest, and a Laplace-approximated Bayesian logistic model, then applies an eight-parameter disagreement/calibration layer. All parameters derive only from the 24,000 organizer-provided labelled rows; no external labels, public solutions, source-table matching, or locked holdout are used.
 
 ## Data cleaning and preprocessing
 
@@ -26,19 +26,20 @@ The reconstructed run produced:
 | Random Forest | 0.424333 | 0.006390 | 0.787465 |
 | Bayesian logistic | 0.426331 | 0.007107 | 0.785452 |
 | **Fixed archive blend** | **0.421507** | **0.006694** | **0.791486** |
+| **Disagreement replay** | **0.421371** | **0.006851** | **0.791591** |
 | OOF-refit blend, development-only | 0.421457 | 0.006637 | 0.791508 |
 
-The selected fixed blend improves overall OOF log loss by **0.012568** over the 0.434075 logistic baseline. The slightly lower refit result is not selected because its weights optimize the same OOF matrix and lack a nested estimate.
+The disagreement replay improves overall OOF log loss by **0.012703** over the 0.434075 logistic baseline. Because the deployed theta was developed from this training population, the archive's properly nested result—**0.421278**, versus **0.421442** for its base blend—is the preferred selection estimate.
 
 Leaderboard score: **PENDING**. This integrity-safe CSV has not been uploaded by this code workflow; once submitted, record the returned score here without regenerating or editing `submission.csv`.
 
 ## Blend and archive regression
 
-The selected weights are 0.564248 CatBoost, 0.250365 Random Forest, and 0.185387 Bayesian logistic. They are fixed historical weights, applied identically to OOF and test probabilities. The reconstructed validation result is within 0.000066 of the archive's stated nested OOF result of 0.421442.
+The base weights are 0.564248 CatBoost, 0.250365 Random Forest, and 0.185387 Bayesian logistic. The disagreement layer adds beta-calibration terms, each component's logit deviation from the base, model-logit spread, and a spread-by-base interaction. All eight coefficients and their ridge setting are frozen in `disagreement_config.json`.
 
-Full-data CatBoost and RF test predictions reproduce the archive's frozen model-only matrix to numerical serialization precision; the Bayesian predictions differ by only 0.0000023 mean absolute error because the archived SciPy version is unavailable in the current runtime. The final fixed-blend test probabilities differ from the archive's safe base blend by 0.00000043 mean absolute error. Detailed comparisons are saved in `artifacts/archive_ensemble_v1/archive_regression.json`.
+Full-data CatBoost and RF test predictions reproduce the archive's frozen model-only matrix to numerical serialization precision; the Bayesian predictions differ by only 0.0000023 mean absolute error because the archived SciPy version is unavailable in the current runtime. The final disagreement probabilities reproduce the archived fallback with correlation 0.999999999994 and mean absolute difference 0.00000049. Detailed comparisons are saved under both versioned artifact directories.
 
-The archive's disagreement adjustment is not selected. Its eight coefficients were preserved without the inner-fold training artifacts needed to independently reconstruct the nested fit, and its documented gain was only 0.000164. The archive's perfect hard-label output remains rejected because it reconstructed test labels from an external source table.
+The disagreement adjustment is selected because its archived nested protocol improves all-model log loss by 0.000164 and the adapted replay improves by 0.000136. The archive did not preserve the inner-OOF matrices required to independently refit the eight coefficients, so this limitation and their exact provenance are disclosed. The archive's perfect hard-label output remains rejected because it reconstructed test labels from an external source table.
 
 ## Additional boosting search
 
@@ -52,7 +53,7 @@ A non-negative 14-model OOF refit reached **0.421323**, an apparent gain of 0.00
 
 ## Final inference and post-processing
 
-After validation, every branch is refitted on all organizer-provided training rows. The three probabilities are combined using the fixed weights above. The only post-processing is clipping to `[1e-7, 1-1e-7]`, applied consistently to OOF, component test, and blended test probabilities. No manual row changes are made. The verified final SHA-256 is `4ecd1e34327d95f46ad36e859b4c805ed361553a8d7bf3c01c3059631967a7a0`.
+After validation, every branch is refitted on all organizer-provided training rows. The three probabilities are combined using the fixed weights and passed through the disagreement equation. The only post-processing is clipping to `[1e-7, 1-1e-7]`, applied consistently to OOF and test probabilities. No manual row changes are made. The verified final SHA-256 is `a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed`.
 
 ## Limitations
 

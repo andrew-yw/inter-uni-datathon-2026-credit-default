@@ -127,7 +127,7 @@
     "maximum_probability": 0.8932925286168621,
     "mean_probability": 0.2199011138128924,
     "minimum_probability": 0.018706467914074446,
-    "path": "submission.csv",
+    "path": "submissions/submission_archive_blend_v1.csv",
     "rows": 6000,
     "sha256": "4ecd1e34327d95f46ad36e859b4c805ed361553a8d7bf3c01c3059631967a7a0"
   },

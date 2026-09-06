@@ -35,6 +35,8 @@ The final hash must equal `expected_submission_sha256` in `ensemble_config.json`
 
 The complete verified run takes approximately four minutes on the development machine. Its fixed-blend OOF log loss is **0.421507**, versus **0.434075** for the retained logistic baseline.
 
+Optional booster research is reproducible with `requirements-research.txt`, `scripts/research_boosters.py`, and `scripts/analyze_booster_screen.py`. On macOS, LightGBM also requires Homebrew `libomp`. These experiments are documented but do not replace the selected submission because their best same-OOF blend gain is only 0.000184 and is not nested validation.
+
 ## Submission status
 
 The repository file is a proposed replacement for the ineligible perfect-score output. `submission.csv` is the reconstructed fixed ensemble; the earlier logistic file remains at `submissions/submission_logistic_interpretable_v1.csv`. To satisfy the organizer PDF, upload the root `submission.csv` and submit this same public repository for review. Record the returned leaderboard score in `METHOD.md` without modifying the CSV.

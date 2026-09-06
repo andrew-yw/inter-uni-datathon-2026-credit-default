@@ -40,6 +40,12 @@ Full-data CatBoost and RF test predictions reproduce the archive's frozen model-
 
 The archive's disagreement adjustment is not selected. Its eight coefficients were preserved without the inner-fold training artifacts needed to independently reconstruct the nested fit, and its documented gain was only 0.000164. The archive's perfect hard-label output remains rejected because it reconstructed test labels from an external source table.
 
+## Additional boosting search
+
+An additional locked-fold screen evaluated 11 materially different candidates: compact, engineered, and behavioural LightGBM/XGBoost representations; CatBoost depths 4 and 6; ordered boosting; and nominal repayment-status variants. The best new single branch was `cat_behavior_status_categories` at **0.422339**. Substituting it into the fixed three-model blend reached **0.421467**, only 0.000040 better.
+
+A non-negative 14-model OOF refit reached **0.421323**, an apparent gain of 0.000184. This result is retained as development evidence but not promoted because the weights were selected on the same OOF matrix and lack nested validation. The requested 0.020 reduction would require **0.401507**, leaving a 0.019816 gap even to that optimistic screen. The evidence therefore does not support claiming a clean 0.02 improvement from these model or blender changes.
+
 ## Explainability
 
 `artifacts/archive_ensemble_v1/feature_importance.csv` contains normalized CatBoost and RF importance values. The dominant tree features concern recent delinquency severity/persistence, credit headroom, and cashflow proxies. These are model-attribution summaries rather than causal effects. The original coefficient-based logistic baseline and `artifacts/coefficients.csv` remain available when maximum interpretability is preferred.

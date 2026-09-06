@@ -1,0 +1,191 @@
+[
+  {
+    "name": "lgb_compact_l15",
+    "family": "lightgbm",
+    "features": "compact",
+    "params": {
+      "learning_rate": 0.025,
+      "max_depth": -1,
+      "reg_lambda": 10.0,
+      "reg_alpha": 0.2,
+      "colsample_bytree": 0.85,
+      "subsample": 0.85,
+      "subsample_freq": 1,
+      "max_bin": 127,
+      "n_estimators": 4000,
+      "num_leaves": 15,
+      "min_child_samples": 100
+    },
+    "status_categories": false
+  },
+  {
+    "name": "lgb_engineered_l15",
+    "family": "lightgbm",
+    "features": "engineered",
+    "params": {
+      "learning_rate": 0.025,
+      "max_depth": -1,
+      "reg_lambda": 10.0,
+      "reg_alpha": 0.2,
+      "colsample_bytree": 0.85,
+      "subsample": 0.85,
+      "subsample_freq": 1,
+      "max_bin": 127,
+      "n_estimators": 4000,
+      "num_leaves": 15,
+      "min_child_samples": 100
+    },
+    "status_categories": false
+  },
+  {
+    "name": "lgb_behavior_l15",
+    "family": "lightgbm",
+    "features": "v2:engineered:status,repayment,cashflow,utilization",
+    "params": {
+      "learning_rate": 0.025,
+      "max_depth": -1,
+      "reg_lambda": 10.0,
+      "reg_alpha": 0.2,
+      "colsample_bytree": 0.85,
+      "subsample": 0.85,
+      "subsample_freq": 1,
+      "max_bin": 127,
+      "n_estimators": 4000,
+      "num_leaves": 15,
+      "min_child_samples": 100
+    },
+    "status_categories": false
+  },
+  {
+    "name": "xgb_compact_d3",
+    "family": "xgboost",
+    "features": "compact",
+    "params": {
+      "learning_rate": 0.03,
+      "min_child_weight": 15,
+      "reg_lambda": 15.0,
+      "reg_alpha": 0.2,
+      "subsample": 0.85,
+      "colsample_bytree": 0.9,
+      "max_bin": 128,
+      "n_estimators": 4000,
+      "max_depth": 3
+    },
+    "status_categories": false
+  },
+  {
+    "name": "xgb_engineered_d3",
+    "family": "xgboost",
+    "features": "engineered",
+    "params": {
+      "learning_rate": 0.03,
+      "min_child_weight": 15,
+      "reg_lambda": 15.0,
+      "reg_alpha": 0.2,
+      "subsample": 0.85,
+      "colsample_bytree": 0.9,
+      "max_bin": 128,
+      "n_estimators": 4000,
+      "max_depth": 3
+    },
+    "status_categories": false
+  },
+  {
+    "name": "xgb_behavior_d3",
+    "family": "xgboost",
+    "features": "v2:engineered:status,repayment,cashflow,utilization",
+    "params": {
+      "learning_rate": 0.03,
+      "min_child_weight": 15,
+      "reg_lambda": 15.0,
+      "reg_alpha": 0.2,
+      "subsample": 0.85,
+      "colsample_bytree": 0.9,
+      "max_bin": 128,
+      "n_estimators": 4000,
+      "max_depth": 3
+    },
+    "status_categories": false
+  },
+  {
+    "name": "cat_behavior_d4",
+    "family": "catboost",
+    "features": "v2:engineered:status,repayment,cashflow,utilization",
+    "params": {
+      "learning_rate": 0.035,
+      "l2_leaf_reg": 6.0,
+      "random_strength": 0.5,
+      "bootstrap_type": "Bayesian",
+      "bagging_temperature": 0.5,
+      "border_count": 128,
+      "iterations": 3500,
+      "depth": 4
+    },
+    "status_categories": false
+  },
+  {
+    "name": "cat_behavior_d6",
+    "family": "catboost",
+    "features": "v2:engineered:status,repayment,cashflow,utilization",
+    "params": {
+      "learning_rate": 0.035,
+      "l2_leaf_reg": 6.0,
+      "random_strength": 0.5,
+      "bootstrap_type": "Bayesian",
+      "bagging_temperature": 0.5,
+      "border_count": 128,
+      "iterations": 3500,
+      "depth": 6
+    },
+    "status_categories": false
+  },
+  {
+    "name": "cat_compact_ordered",
+    "family": "catboost",
+    "features": "compact",
+    "params": {
+      "learning_rate": 0.045,
+      "l2_leaf_reg": 8.0,
+      "random_strength": 0.5,
+      "bootstrap_type": "Bayesian",
+      "bagging_temperature": 0.4,
+      "border_count": 128,
+      "iterations": 3500,
+      "depth": 4,
+      "boosting_type": "Ordered"
+    },
+    "status_categories": false
+  },
+  {
+    "name": "cat_compact_status_categories",
+    "family": "catboost",
+    "features": "compact",
+    "params": {
+      "learning_rate": 0.035,
+      "l2_leaf_reg": 8.0,
+      "random_strength": 0.7,
+      "bootstrap_type": "Bayesian",
+      "bagging_temperature": 0.5,
+      "border_count": 128,
+      "iterations": 3500,
+      "depth": 5
+    },
+    "status_categories": true
+  },
+  {
+    "name": "cat_behavior_status_categories",
+    "family": "catboost",
+    "features": "v2:engineered:status,repayment,cashflow,utilization",
+    "params": {
+      "learning_rate": 0.035,
+      "l2_leaf_reg": 8.0,
+      "random_strength": 0.7,
+      "bootstrap_type": "Bayesian",
+      "bagging_temperature": 0.5,
+      "border_count": 128,
+      "iterations": 3500,
+      "depth": 5
+    },
+    "status_categories": true
+  }
+]

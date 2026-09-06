@@ -1,0 +1,26 @@
+{
+  "best_global_refit_log_loss_development_only": 0.42132267804611456,
+  "candidate_count": 11,
+  "decision": "Do not promote: gain is tiny, selected on the same OOF matrix, and lacks nested validation.",
+  "global_refit_weights": {
+    "bayes_laplace_curved": 0.20042084885037562,
+    "cat_behavior_d4": 0.0,
+    "cat_behavior_d5": 0.11508742686845434,
+    "cat_behavior_d6": 0.09232008139686658,
+    "cat_behavior_status_categories": 0.13769776390676228,
+    "cat_compact_ordered": 0.055764505264576325,
+    "cat_compact_status_categories": 0.0,
+    "lgb_behavior_l15": 0.0,
+    "lgb_compact_l15": 5.2164326658811785e-17,
+    "lgb_engineered_l15": 6.626439563094866e-18,
+    "rf_behavior_leaf30": 0.2527716296857707,
+    "xgb_behavior_d3": 0.14593774402719417,
+    "xgb_compact_d3": 0.0,
+    "xgb_engineered_d3": 0.0
+  },
+  "observed_gain_development_only": 0.00018434630192282198,
+  "remaining_gap_to_requested_loss": 0.019815653698077196,
+  "requested_absolute_gain": 0.02,
+  "requested_log_loss": 0.40150702434803737,
+  "selected_fixed_blend_log_loss": 0.4215070243480374
+}

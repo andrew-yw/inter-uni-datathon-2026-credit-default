@@ -1,5 +1,7 @@
 {
   "version": "seed_bagged_challenger_v1",
+  "selection_status": "rejected_after_worse_competition_test_log_loss",
+  "reported_competition_test_log_loss": null,
   "seeds": [2026, 137, 4099, 7919],
   "catboost_views": ["numeric_status", "categorical_status"],
   "cat_branch_aggregation": "equal mean over all eight members",

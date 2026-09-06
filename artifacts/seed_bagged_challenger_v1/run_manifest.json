@@ -1,4 +1,6 @@
 {
+  "selection_status": "rejected_after_worse_competition_test_log_loss",
+  "reported_competition_test_log_loss": null,
   "cat_members": [
     {
       "iterations": 437,

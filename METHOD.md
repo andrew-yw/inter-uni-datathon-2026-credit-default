@@ -58,6 +58,14 @@ Full-data CatBoost and RF test predictions reproduce the archive's frozen model-
 
 The disagreement adjustment is selected because its archived nested protocol improves all-model log loss by 0.000164 and the adapted replay improves by 0.000136. The archive did not preserve the inner-OOF matrices required to independently refit the eight coefficients, so this limitation and their exact provenance are disclosed. The archive's perfect hard-label output remains rejected because it reconstructed test labels from an external source table.
 
+## Superseded perfect-score investigation
+
+My original fallback concept was to use exact UCI source-table matches where they existed and use the trained disagreement ensemble for any unresolved test rows. The completed archive audit showed that this was not a partial-coverage hybrid in practice: 5,991 of 6,000 test rows had an unambiguous source label, and the remaining 9 were resolved by subtracting known training-label counts within duplicated feature groups. The trained model supplied predictions for **zero** final rows.
+
+The `98.0179%` figure recorded in the old audit was the geometric mean correct-class probability implied by a hypothetical log loss of 0.02002 (`exp(-0.02002)`), not the percentage of test rows covered by UCI. It would therefore be inaccurate to describe the old result as “98.2% UCI coverage plus 1.8% correctly predicted by the model.” In record terms, external source reconstruction determined all 6,000 outputs.
+
+That investigation helped identify the dataset relationship, but it is label reconstruction rather than model generalization. Because it uses external source labels and perfect-score entries are not eligible, I excluded the entire path from the selected submission. The final `submission.csv` in this repository is generated only by the CatBoost, Random Forest and Bayesian ensemble described above.
+
 ## Seed-bagging audit
 
 The initial setup relied on one CatBoost seed despite Bayesian bootstrapping and random feature effects. Three additional seeds (`137`, `4099`, and `7919`) were evaluated for both numeric repayment severity and nominal repayment-status treatment. Equal averaging improved all five saved folds, but increased competition-test log loss relative to the immediately previous disagreement submission. The seed-bag candidate is therefore rejected and preserved only for audit. Two additional RF seeds were also rejected because their averaged disagreement loss was no better than retaining the original forest.

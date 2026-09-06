@@ -6,7 +6,7 @@ This disclosure separates material used to train the prediction models from mate
 
 No external dataset is used to fit the final models. Training uses only the 24,000 labelled rows in the organizer-provided `train.csv`; inference uses the organizer-provided `test.csv` and `sample_submission.csv`.
 
-The earlier `credit_card_solution_final.zip` archive I supplied contained a copy of the external UCI *Default of Credit Card Clients* table and a perfect-score path based on source-table label reconstruction. That dataset, its labels and its row-matching procedure are excluded from this repository's final training and inference path.
+The earlier `credit_card_solution_final.zip` archive I supplied contained a copy of the external UCI *Default of Credit Card Clients* table and a perfect-score path based on source-table label reconstruction. Its design allowed trained-model fallback for unresolved rows, but the archived provenance shows that 5,991 test rows were assigned directly from unambiguous source labels, the remaining 9 were resolved by labelled-count subtraction, and model fallback was used for zero rows. That dataset, its labels and its row-matching procedure are excluded from this repository's final training and inference path.
 
 ## External code, notebooks, repositories or public solutions
 

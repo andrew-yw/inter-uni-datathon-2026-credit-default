@@ -37,7 +37,7 @@
     "maximum_probability": 0.9393106301020175,
     "mean_probability": 0.21827837552429322,
     "minimum_probability": 0.015258570751684295,
-    "path": "submission.csv",
+    "path": "submissions/submission_logistic_interpretable_v1.csv",
     "rows": 6000,
     "sha256": "ef4d2e1519c32c4b0bfdc52f9292060f684d6dec1d39dd528e2bdb847ca6a26e"
   },

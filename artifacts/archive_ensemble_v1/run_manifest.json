@@ -1,0 +1,145 @@
+{
+  "blend": {
+    "archive_fixed_weights": [
+      0.5642478395498848,
+      0.25036472159642154,
+      0.18538743885369374
+    ],
+    "model_order": [
+      "cat_behavior_d5",
+      "rf_behavior_leaf30",
+      "bayes_laplace_curved"
+    ],
+    "oof_refit_weights_development_only": [
+      0.44581646107292017,
+      0.30999646392527364,
+      0.2441870750018062
+    ],
+    "selection": "archive_fixed_weights",
+    "warning": "Refit weights optimize the same OOF matrix and are not a nested validation estimate."
+  },
+  "external_training_data_used": false,
+  "input_sha256": {
+    "sample_submission.csv": "7650a4457be9a81c8bc11d570cf2ae785bff502c4f00f586f8c6733c4a6964e6",
+    "test.csv": "23ac82039abb86c31922ddae000e6ee853cf4c4b2cd086ce10d10022313a2c09",
+    "train.csv": "e941523a7928f201610a81ea123754fd92f8a54b42d887de1cf3eeb8f94a5c40"
+  },
+  "models": [
+    {
+      "family": "catboost",
+      "features": "v2:engineered:status,repayment,cashflow,utilization",
+      "full_fit_iterations": 437,
+      "name": "cat_behavior_d5",
+      "params": {
+        "bagging_temperature": 0.5,
+        "bootstrap_type": "Bayesian",
+        "border_count": 128,
+        "depth": 5,
+        "iterations": 3500,
+        "l2_leaf_reg": 6.0,
+        "learning_rate": 0.035,
+        "random_strength": 0.5
+      },
+      "status_categories": false
+    },
+    {
+      "family": "random_forest",
+      "features": "v2:engineered:status,repayment,cashflow,utilization",
+      "name": "rf_behavior_leaf30",
+      "params": {
+        "bootstrap": true,
+        "class_weight": null,
+        "criterion": "gini",
+        "max_depth": null,
+        "max_features": 0.5,
+        "max_samples": 0.85,
+        "min_samples_leaf": 30,
+        "n_estimators": 400
+      },
+      "status_categories": false
+    },
+    {
+      "family": "bayesian",
+      "features": "raw",
+      "name": "bayes_laplace_curved",
+      "params": {
+        "interaction_splines": true,
+        "interactions": true,
+        "kind": "laplace_logistic",
+        "knots": 5,
+        "prior_precision": 60.0,
+        "representation": "behavior"
+      },
+      "status_categories": false
+    }
+  ],
+  "overall_oof": {
+    "archive_fixed_blend": {
+      "brier": 0.13214406137771062,
+      "candidate": "archive_fixed_blend",
+      "fold_log_loss_mean": 0.4215075736070177,
+      "fold_log_loss_std": 0.006694192418466042,
+      "log_loss": 0.42150702434803666,
+      "pr_auc": 0.568126379640051,
+      "roc_auc": 0.7914862513215314
+    },
+    "bayes_laplace_curved": {
+      "brier": 0.13377382048166667,
+      "candidate": "bayes_laplace_curved",
+      "fold_log_loss_mean": 0.4263310311322034,
+      "fold_log_loss_std": 0.007106911870341626,
+      "log_loss": 0.4263306131873276,
+      "pr_auc": 0.554418396406783,
+      "roc_auc": 0.7854516965692783
+    },
+    "cat_behavior_d5": {
+      "brier": 0.13244863084978498,
+      "candidate": "cat_behavior_d5",
+      "fold_log_loss_mean": 0.42255019123230425,
+      "fold_log_loss_std": 0.0070171121940714115,
+      "log_loss": 0.4225495514625715,
+      "pr_auc": 0.5652727744682169,
+      "roc_auc": 0.7903038328359443
+    },
+    "oof_refit_blend_development_only": {
+      "brier": 0.13213574394564645,
+      "candidate": "oof_refit_blend_development_only",
+      "fold_log_loss_mean": 0.4214575957657745,
+      "fold_log_loss_std": 0.006636750316559155,
+      "log_loss": 0.4214570649968221,
+      "pr_auc": 0.5681382335541086,
+      "roc_auc": 0.7915079986631934
+    },
+    "rf_behavior_leaf30": {
+      "brier": 0.13294980383315852,
+      "candidate": "rf_behavior_leaf30",
+      "fold_log_loss_mean": 0.42433397805977496,
+      "fold_log_loss_std": 0.006389721191653565,
+      "log_loss": 0.4243334442358455,
+      "pr_auc": 0.5626721193467932,
+      "roc_auc": 0.787464545055942
+    }
+  },
+  "runtime_seconds": 223.08357554208487,
+  "saved_folds_sha256": "0114bd7904a22befbd735df03288a302d95b93d63b606630d1f25107157772e4",
+  "source_label_matching_used": false,
+  "submission": {
+    "maximum_probability": 0.8932925286168621,
+    "mean_probability": 0.2199011138128924,
+    "minimum_probability": 0.018706467914074446,
+    "path": "submission.csv",
+    "rows": 6000,
+    "sha256": "4ecd1e34327d95f46ad36e859b4c805ed361553a8d7bf3c01c3059631967a7a0"
+  },
+  "test_labels_accessed": false,
+  "version": "archive_ensemble_v1",
+  "versions": {
+    "catboost": "1.2.10",
+    "joblib": "1.5.3",
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "python": "3.13.2",
+    "scikit_learn": "1.9.0",
+    "scipy": "1.16.3"
+  }
+}

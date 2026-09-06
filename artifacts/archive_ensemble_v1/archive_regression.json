@@ -1,0 +1,31 @@
+{
+  "archive_zip_sha256": "f4f5dbdf20733ca27cb99e23debe7773abf985945de7e9e8decf45175d610950",
+  "comparison_scope": "Frozen model-only oof_matrix and test_matrix; external source labels excluded",
+  "oof_comparison": {
+    "cat_behavior_d5": {
+      "mean_absolute_difference": 0.010954466356217097,
+      "correlation": 0.9959895420694226,
+      "archived_log_loss": 0.42231704671277753,
+      "rebuilt_log_loss": 0.4225495514625715
+    },
+    "rf_behavior_leaf30": {
+      "mean_absolute_difference": 0.006593356154965384,
+      "correlation": 0.9988251475940723,
+      "archived_log_loss": 0.42420271491957084,
+      "rebuilt_log_loss": 0.4243334442358455
+    },
+    "bayes_laplace_curved": {
+      "mean_absolute_difference": 0.0000016216944642329776,
+      "correlation": 0.9999999999036764,
+      "archived_log_loss": 0.4263307286453936,
+      "rebuilt_log_loss": 0.4263306131873276
+    }
+  },
+  "full_fit_test_comparison": {
+    "cat_behavior_d5_mean_absolute_difference": 1.748019506919718e-13,
+    "rf_behavior_leaf30_mean_absolute_difference": 1.7902372292932788e-13,
+    "bayes_laplace_curved_mean_absolute_difference": 0.0000023205179318901473,
+    "fixed_blend_mean_absolute_difference": 4.301948744473526e-7
+  },
+  "interpretation": "Full-fit CatBoost and Random Forest predictions reproduce the archive to serialization precision. OOF drift is small and is retained transparently rather than replaced by archived predictions."
+}

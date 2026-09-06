@@ -1,0 +1,19 @@
+{
+  "model_order": [
+    "cat_behavior_d5",
+    "rf_behavior_leaf30",
+    "bayes_laplace_curved"
+  ],
+  "archive_fixed_weights": [
+    0.5642478395498848,
+    0.25036472159642154,
+    0.18538743885369374
+  ],
+  "oof_refit_weights_development_only": [
+    0.44581646107292017,
+    0.30999646392527364,
+    0.2441870750018062
+  ],
+  "selection": "archive_fixed_weights",
+  "warning": "Refit weights optimize the same OOF matrix and are not a nested validation estimate."
+}

@@ -53,7 +53,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data-dir", type=Path, default=ROOT / "data" / "raw")
     parser.add_argument("--config", type=Path, default=ROOT / "config.json")
-    parser.add_argument("--output", type=Path, default=ROOT / "submission.csv")
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=ROOT / "submissions" / "submission_logistic_interpretable_v1.csv",
+    )
     parser.add_argument("--artifacts-dir", type=Path, default=ROOT / "artifacts")
     args = parser.parse_args()
 

@@ -6,6 +6,8 @@ My final submission is a deliberately conservative three-model probability ensem
 
 The final CSV is the best uploaded version that has been positively identified by the user and matched locally. It contains 6,000 predictions and has SHA-256 `a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed`.
 
+An important integrity decision shaped this final version. I discovered that the competition feature multiset corresponded to the UCI source table and initially designed a source-match-first, model-fallback-second pipeline. A row-level audit later showed that external source reconstruction determined all 6,000 test outputs and the model fallback determined none. I excluded that perfect-score route and submitted the fully model-based pipeline described in this report; full counts and interpretation appear in [Superseded perfect-score investigation](#superseded-perfect-score-investigation).
+
 ## Selected approach
 
 The selected candidate is the model-only fallback reconstructed from the supplied archive. It combines a depth-5 CatBoost model, a 400-tree Random Forest, and a Laplace-approximated Bayesian logistic model, then passes them through the archived eight-parameter disagreement/calibration layer. All parameters derive only from the 24,000 organizer-provided labelled rows; no external labels, public solutions, source-table matching, or locked holdout are used.

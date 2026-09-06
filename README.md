@@ -17,6 +17,9 @@ This repository is the complete finalist-review package for my Stream 1 credit-d
 
 The leaderboard score itself was not provided, so I do not invent or estimate it here. The reported 0.421371 is an out-of-fold development result, not a leaderboard score.
 
+> [!IMPORTANT]
+> **Why the earlier perfect-score file is not my final submission.** During exploration, I identified that the combined competition feature records corresponded to the 30,000-row UCI source table. My original design used exact source matches first and reserved the trained ensemble as fallback for unresolved rows. The completed row-level audit found 5,991 direct unambiguous source labels and resolved the remaining 9 by subtracting labelled training counts; the model fallback ultimately determined zero rows. I therefore classified that result as external-label reconstruction rather than model generalization and excluded it, especially because perfect-score entries are not eligible. The submitted `submission.csv` is the independently reproducible model-only ensemble. The full evidence is documented in [`METHOD.md`](METHOD.md#superseded-perfect-score-investigation) and [`docs/INTEGRITY_AUDIT.md`](docs/INTEGRITY_AUDIT.md).
+
 ## Reproduce the exact file
 
 The cleanest review path is one command. It retrains all three branches from the organizer files in an isolated temporary directory, applies the frozen blend and disagreement layer, verifies the expected hash, and only then replaces the requested output.

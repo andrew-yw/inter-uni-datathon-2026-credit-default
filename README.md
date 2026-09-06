@@ -10,12 +10,13 @@ This repository is the complete finalist-review package for my Stream 1 credit-d
 | Rows | 6,000 |
 | SHA-256 | `a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed` |
 | Status | Byte-for-byte match to the user-confirmed best uploaded Kaggle file |
+| Official Kaggle public score | **0.41021** (rank 6 in the 6 September 2026, 11:32 pm local-time leaderboard snapshot) |
 | Development replay OOF log loss | 0.421371 |
 | Validation | Five immutable grouped folds, seed 2026 |
 | Training data | Organizer-provided `train.csv` only |
 | Final ensemble | CatBoost + Random Forest + Bayesian logistic |
 
-The leaderboard score itself was not provided, so I do not invent or estimate it here. The reported 0.421371 is an out-of-fold development result, not a leaderboard score.
+Kaggle displayed **0.41021** for this exact submission, matching my best public score at the captured leaderboard snapshot. The reported 0.421371 is a separate out-of-fold development result. Rank 6 is a time-specific public-leaderboard snapshot, not a claim about the final locked ranking.
 
 > [!IMPORTANT]
 > **Why the earlier perfect-score file is not my final submission.** During exploration, I identified that the combined competition feature records corresponded to the 30,000-row UCI source table. My original design used exact source matches first and reserved the trained ensemble as fallback for unresolved rows. The completed row-level audit found 5,991 direct unambiguous source labels and resolved the remaining 9 by subtracting labelled training counts; the model fallback ultimately determined zero rows. I therefore classified that result as external-label reconstruction rather than model generalization and excluded it, especially because perfect-score entries are not eligible. The submitted `submission.csv` is the independently reproducible model-only ensemble. The full evidence is documented in [`METHOD.md`](METHOD.md#superseded-perfect-score-investigation) and [`docs/INTEGRITY_AUDIT.md`](docs/INTEGRITY_AUDIT.md).
@@ -146,4 +147,4 @@ Research-only alternatives remain versioned for auditability, but they are not p
 
 ## Final handoff
 
-The repository has been verified as public. As the only team member, I should submit this repository and the exact root `submission.csv` once before midnight at the end of Sunday, 6 September 2026. If the exact numeric leaderboard score is available, I will add it to `METHOD.md` without regenerating or editing the prediction file.
+The repository has been verified as public. As the only team member, I should submit this repository and the exact root `submission.csv` once before midnight at the end of Sunday, 6 September 2026. The official public score has been recorded without regenerating or editing the prediction file.

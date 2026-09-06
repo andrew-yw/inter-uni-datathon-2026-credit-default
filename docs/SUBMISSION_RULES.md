@@ -34,5 +34,5 @@ The submitted materials must plausibly reconstruct the full path from competitio
 - [x] Repository visibility is `PUBLIC`: <https://github.com/andrew-yw/inter-uni-datathon-2026-credit-default>.
 - [x] No external source labels, UCI reconstruction data, secrets, or organizer raw data are tracked by Git.
 - [x] Methodology, final model settings, saved artifacts and required disclosure are included.
-- [ ] If available, add the exact numeric leaderboard score to `METHOD.md` without modifying the CSV. The score has not been provided and must not be guessed.
+- [x] The official Kaggle public score, 0.41021, is recorded in `README.md` and `METHOD.md` without modifying the CSV; rank 6 is labelled as a time-specific snapshot.
 - [ ] As the only team member, submit the repository once before the deadline.

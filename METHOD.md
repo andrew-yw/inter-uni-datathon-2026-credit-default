@@ -50,7 +50,7 @@ The selected disagreement replay improves overall OOF log loss by **0.012703** o
 
 A separate nested full-refit experiment used the four outer-training folds to select CatBoost tree counts before refitting on all four and evaluating the untouched fifth fold. Its best policy scored 0.421617, worse than the current 0.421371 replay, so it was not promoted. The production inference model already fits all 24,000 labelled rows; the experiment did not unlock unused final-training data.
 
-Leaderboard status: **user-confirmed best uploaded submission**. The downloaded Kaggle file was verified byte-for-byte against the selected repository `submission.csv` using SHA-256 `a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed`. The exact numeric leaderboard score was not provided.
+Leaderboard status: **official Kaggle public score 0.41021**, matching my best, at rank 6 in the leaderboard snapshot captured on 6 September 2026 at 11:32 pm local time. This is a time-specific public-leaderboard position rather than a claim about the final locked ranking. The downloaded Kaggle file was verified byte-for-byte against the selected repository `submission.csv` using SHA-256 `a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed`.
 
 ## Blend and archive regression
 

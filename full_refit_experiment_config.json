@@ -1,0 +1,9 @@
+{
+  "version": "full_refit_policy_v1",
+  "model": "cat_behavior_d5",
+  "feature_mode": "v2:engineered:status,repayment,cashflow,utilization",
+  "seed": 2026,
+  "iteration_policies": ["inner_median", "inner_mean", "inner_p75", "archive_fixed_437"],
+  "protocol": "For each outer saved fold, use each of the other four saved folds as inner validation, aggregate best iterations, refit on all four outer-training folds, and evaluate only on the untouched outer fold.",
+  "test_data_accessed": false
+}

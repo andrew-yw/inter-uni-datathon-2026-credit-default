@@ -1,0 +1,22 @@
+{
+  "current_final_oof_log_loss": 0.4213712694455315,
+  "current_submission_sha256": "a892ef4c5712ccd9da799c6a7710f3d0f7136c5bc8522ca61de5780d0ca6cfed",
+  "original_outer_best_iterations": [
+    307,
+    264,
+    730,
+    413,
+    316
+  ],
+  "proposed_full_data_iterations": {
+    "archive_fixed_437": 437,
+    "inner_mean": 406,
+    "inner_median": 316,
+    "inner_p75": 413
+  },
+  "protocol": "For each outer saved fold, use each of the other four saved folds as inner validation, aggregate best iterations, refit on all four outer-training folds, and evaluate only on the untouched outer fold.",
+  "saved_folds_sha256": "0114bd7904a22befbd735df03288a302d95b93d63b606630d1f25107157772e4",
+  "submission_modified": false,
+  "test_data_accessed": false,
+  "version": "full_refit_policy_v1"
+}
